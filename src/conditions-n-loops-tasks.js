@@ -39,7 +39,14 @@ function isPositive(number) {
  *  -0.1, 0, 0.2  => 0.2
  */
 function getMaxNumber(a, b, c) {
-  return Math.max(a, b, c);
+  let maxNumber = a;
+  if (maxNumber < b) {
+    maxNumber = b;
+  }
+  if (maxNumber < c) {
+    maxNumber = c;
+  }
+  return maxNumber;
 }
 
 /**
@@ -110,31 +117,51 @@ function isIsoscelesTriangle(a, b, c) {
  *  26  => XXVI
  */
 function convertToRomanNumerals(num) {
-  let res = '';
-  if (num / 10 >= 1) {
-    res += 'X'.repeat(Math.trunc(num / 10));
-    if (num % 10 === 9) {
-      res += 'IX';
-    } else if (num % 10 < 9 && num % 10 >= 5) {
-      res += 'V';
-      res += 'I'.repeat(num % 5);
-    } else if (num % 10 === 4) {
-      res += 'IV';
-    } else {
-      res += 'I'.repeat(num % 10);
-    }
-  } else if (num === 9) {
-    res += 'IX';
-  } else if (num < 9 && num >= 5) {
-    res += 'V';
-    res += 'I'.repeat(num - 5);
-  } else if (num === 4) {
-    res += 'IV';
-  } else {
-    res += 'I'.repeat(num);
-  }
+  const tens = Math.trunc(num / 10);
+  const ones = num - 10 * tens;
+  let convertedNum = '';
+  switch (tens) {
+    case 1:
+      convertedNum += 'X';
+      break;
 
-  return res;
+    case 2:
+      convertedNum += 'XX';
+      break;
+
+    case 3:
+      convertedNum += 'XXX';
+      break;
+
+    default:
+      break;
+  }
+  switch (ones) {
+    case 4:
+      convertedNum += 'IV';
+      break;
+    case 5:
+      convertedNum += 'V';
+      break;
+    case 9:
+      convertedNum += 'IX';
+      break;
+
+    default:
+      break;
+  }
+  if (ones <= 3) {
+    for (let i = 1; i <= ones; i += 1) {
+      convertedNum += 'I';
+    }
+  }
+  if (ones > 5 && ones < 9) {
+    convertedNum += 'V';
+    for (let i = 6; i <= ones; i += 1) {
+      convertedNum += 'I';
+    }
+  }
+  return convertedNum;
 }
 
 /**
@@ -152,32 +179,58 @@ function convertToRomanNumerals(num) {
  *  '1950.2'  => 'one nine five zero point two'
  */
 function convertNumberToString(numberStr) {
-  const alpha = {
-    1: 'one',
-    2: 'two',
-    3: 'three',
-    4: 'four',
-    5: 'five',
-    6: 'six',
-    7: 'seven',
-    8: 'eight',
-    9: 'nine',
-    0: 'zero',
-    '-': 'minus',
-    '.': 'point',
-    ',': 'point',
-  };
-  const arrNumberStr = numberStr.split('');
-  let string = '';
-  for (let i = 0; i < numberStr.length; i += 1) {
-    switch (arrNumberStr[i]) {
+  let convertedNum = '';
+  let i = 0;
+  while (i < numberStr.length) {
+    switch (numberStr[i]) {
+      case '0':
+        convertedNum += 'zero';
+        break;
+      case '1':
+        convertedNum += 'one';
+        break;
+      case '2':
+        convertedNum += 'two';
+        break;
+      case '3':
+        convertedNum += 'three';
+        break;
+      case '4':
+        convertedNum += 'four';
+        break;
+      case '5':
+        convertedNum += 'five';
+        break;
+      case '6':
+        convertedNum += 'six';
+        break;
+      case '7':
+        convertedNum += 'seven';
+        break;
+      case '8':
+        convertedNum += 'eight';
+        break;
+      case '9':
+        convertedNum += 'nine';
+        break;
+      case '-':
+        convertedNum += 'minus';
+        break;
+      case '.':
+        convertedNum += 'point';
+        break;
+      case ',':
+        convertedNum += 'point';
+        break;
       default:
-        string += alpha[arrNumberStr[i]];
-        string += ' ';
         break;
     }
+    if (i !== numberStr.length - 1) {
+      convertedNum += ' ';
+    }
+    i += 1;
   }
-  return string.trimEnd();
+  return convertedNum;
 }
 
 /**
@@ -314,6 +367,25 @@ function getSpiralMatrix(/* size */) {
 }
 
 /**
+ * Rotates a matrix by 90 degrees clockwise in place.
+ * Take into account that the matrix size can be very large. Consider how you can optimize your solution.
+ * Usage of String and Array class methods is not allowed in this task.
+ *
+ * @param {number[][]} matrix - The matrix to rotate.
+ * @return {number[][]} The rotated matrix.
+ *
+ * @example:
+ *  [                 [
+ *    [1, 2, 3],        [7, 4, 1],
+ *    [4, 5, 6],  =>    [8, 5, 2],
+ *    [7, 8, 9]         [9, 6, 3]
+ *  ]                 ]
+ */
+function rotateMatrix(/* matrix */) {
+  throw new Error('Not implemented');
+}
+
+/**
  * Sorts an array of numbers in ascending order in place.
  * Employ any sorting algorithm of your choice.
  * Take into account that the array can be very large. Consider how you can optimize your solution.
@@ -327,6 +399,7 @@ function getSpiralMatrix(/* size */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
+
 function sortByAsc(/* arr */) {
   throw new Error('Not implemented');
 }
@@ -353,21 +426,23 @@ function shuffleChar(/* str, iterations */) {
 }
 
 /**
- * Rotates a matrix by 90 degrees clockwise in place.
- * Take into account that the matrix size can be very large. Consider how you can optimize your solution.
- * Usage of String and Array class methods is not allowed in this task.
- *
- * @param {number[][]} matrix - The matrix to rotate.
- * @return {number[][]} The rotated matrix.
+ * Returns the nearest largest integer consisting of the digits of the given positive integer.
+ * If there is no such number, it returns the original number.
+ * Usage of String class methods is not allowed in this task.
  *
  * @example:
- *  [                 [
- *    [1, 2, 3],        [7, 4, 1],
- *    [4, 5, 6],  =>    [8, 5, 2],
- *    [7, 8, 9]         [9, 6, 3]
- *  ]                 ]
+ * 12345    => 12354
+ * 123450   => 123504
+ * 12344    => 12434
+ * 123440   => 124034
+ * 1203450  => 1203504
+ * 90822    => 92028
+ * 321321   => 322113
+ *
+ * @param {number} number The source number
+ * @returns {number} The nearest larger number, or original number if none exists.
  */
-function rotateMatrix(/* matrix */) {
+function getNearestBigger(/* number */) {
   throw new Error('Not implemented');
 }
 
@@ -383,7 +458,8 @@ module.exports = {
   isContainNumber,
   getBalanceIndex,
   getSpiralMatrix,
+  rotateMatrix,
   sortByAsc,
   shuffleChar,
-  rotateMatrix,
+  getNearestBigger,
 };
